@@ -58,8 +58,28 @@ h2{
   width: 350px;
 }
 
-span{
+span.chip {
   border-radius: 3px;
   padding: 4.5px;
   margin: 1px;
+}
+
+.word{
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  margin-top: 40px;
+  padding: 10px 0;
+}
+
+span.letter {
+  color: #ffffff;
+  background-color: #323232;
+  font-size: 1.125em;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #f9f4da;
 }

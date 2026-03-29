@@ -3,10 +3,11 @@ import './App.css'
 import languages from './language.js'
 
 export default function Endgame() {
-    
+    const [currentWord, setCurrentWord] = useState("react");
     const languageElements = languages.map((lang) =>{
         return(
-            <span 
+            <span
+               className="chip" 
                key={lang.name}
                name={lang.name}
                style={{
@@ -18,6 +19,11 @@ export default function Endgame() {
             </span>   
         )
     })
+
+    const wordElements = currentWord.split("").map((letter, index) => 
+            <span key={index} className="letter">{letter.toUpperCase()}
+            </span>
+        )
 
     return (
         <main>
@@ -31,7 +37,10 @@ export default function Endgame() {
             </section>  
             <section className="language-chips">
                 {languageElements}    
-            </section>     
+            </section> 
+            <section className="word">
+                {wordElements}
+            </section>   
         </main>
     )
 }
