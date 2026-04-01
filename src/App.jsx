@@ -25,6 +25,11 @@ export default function Endgame() {
             </span>
         )
 
+    const alphabet = "abcdefghijklmnopqrstuvwxyz".split("").map((keyboard, index) =>
+        <button key={index} className="keyboard">{keyboard.toUpperCase()}
+        </button>
+    )
+
     return (
         <main>
             <header>
@@ -40,7 +45,11 @@ export default function Endgame() {
             </section> 
             <section className="word">
                 {wordElements}
-            </section>   
+            </section>  
+            <section className="keyboard-display">
+                {alphabet}
+            </section>
+            <button className="new-game">New Game</button>
         </main>
     )
 }
