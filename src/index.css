@@ -101,6 +101,12 @@ span.letter {
   width: 40px;
   border: solid 1px #d7d7d7;
 }
+.bg-green{
+  background-color: #10a95b;
+}
+.bg-red{
+  background-color: #EC5D49;
+}
 
 .keyboard-display{
   display: flex;
@@ -126,4 +132,3 @@ button.new-game {
     margin-inline: auto;
     cursor: pointer;
 }
-

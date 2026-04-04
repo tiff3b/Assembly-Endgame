@@ -1,9 +1,20 @@
 import { useState } from 'react'
 import './App.css'
 import languages from './language.js'
+import { clsx } from 'clsx'
 
 export default function Endgame() {
+
     const [currentWord, setCurrentWord] = useState("react");
+
+    const[guess, setGuess] = useState([]);
+    
+    function handleGuess(letter) {
+        setGuess(prevGuess => 
+            prevGuess.includes(letter) ?
+                prevGuess : [...prevGuess, letter])
+    }
+
     const languageElements = languages.map((lang) =>{
         return(
             <span
@@ -25,10 +36,23 @@ export default function Endgame() {
             </span>
         )
 
-    const alphabet = "abcdefghijklmnopqrstuvwxyz".split("").map((keyboard, index) =>
-        <button key={index} className="keyboard">{keyboard.toUpperCase()}
-        </button>
-    )
+    const alphabet = "abcdefghijklmnopqrstuvwxyz".split("").map((keyboard, index) => {
+        const isGuessed = guess.includes(keyboard);
+        const isCorrect = currentWord.includes(keyboard);
+
+        const className= clsx("keyboard", {
+            "bg-green" : isGuessed && isCorrect,
+            "bg-red" : isGuessed && !isCorrect,
+            }) 
+console.log(className)
+        return (
+            <button key={index} 
+                    className={className}
+                    onClick={() => handleGuess(keyboard)}>
+                {keyboard.toUpperCase()}
+            </button>
+        );
+    });    
 
     return (
         <main>
