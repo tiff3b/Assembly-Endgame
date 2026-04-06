@@ -8,19 +8,34 @@ export default function Endgame() {
     const [currentWord, setCurrentWord] = useState("react");
 
     const[guess, setGuess] = useState([]);
+
+    const wrongGuessCount = guess.filter(
+        letter => !currentWord.includes(letter)).length
+
+    const maxAttempts = 8;
     
     function handleGuess(letter) {
-        setGuess(prevGuess => 
-            prevGuess.includes(letter) ?
-                prevGuess : [...prevGuess, letter])
-    }
+        setGuess(prevGuess => {
+            const wrongCount = prevGuess.filter( 
+                letter => !currentWord.includes(letter)
+        ).length;
 
-    const languageElements = languages.map((lang) =>{
+        if (prevGuess.includes(letter) ||
+            wrongCount >= maxAttempts
+        ) {
+            return prevGuess;
+            }
+            return [...prevGuess, letter];
+    });
+}
+
+    const languageElements = languages.map((lang, index) =>{
+        const isLost = index < wrongGuessCount;
+
         return(
             <span
-               className="chip" 
+               className={clsx("chip", {"lost": isLost})} 
                key={lang.name}
-               name={lang.name}
                style={{
                 backgroundColor: lang.backgroundColor,
                 color: lang.color
@@ -31,10 +46,11 @@ export default function Endgame() {
         )
     })
 
-    const wordElements = currentWord.split("").map((letter, index) => 
-            <span key={index} className="letter">{letter.toUpperCase()}
+    const wordElements = currentWord.split("").map((letter, index) => (
+        <span key={index} className="letter">
+            {guess.includes(letter) ? letter.toUpperCase() : ""}
             </span>
-        )
+    ))
 
     const alphabet = "abcdefghijklmnopqrstuvwxyz".split("").map((keyboard, index) => {
         const isGuessed = guess.includes(keyboard);
@@ -44,7 +60,7 @@ export default function Endgame() {
             "bg-green" : isGuessed && isCorrect,
             "bg-red" : isGuessed && !isCorrect,
             }) 
-console.log(className)
+
         return (
             <button key={index} 
                     className={className}
