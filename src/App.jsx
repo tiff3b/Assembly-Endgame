@@ -9,24 +9,25 @@ export default function Endgame() {
 
     const[guess, setGuess] = useState([]);
 
-    const wrongGuessCount = guess.filter(
-        letter => !currentWord.includes(letter)).length
-
-    const maxAttempts = 8;
+    const wrongGuessCount = 
+        guess.filter(letter => !currentWord.includes(letter)).length
+    const isGameWon = 
+            currentWord.split("").every(letter => guess.includes(letter))
+    const isGameLost = wrongGuessCount >= languages.length -1
+    const isGameOver = isGameWon || isGameLost
     
-    function handleGuess(letter) {
-        setGuess(prevGuess => {
-            const wrongCount = prevGuess.filter( 
-                letter => !currentWord.includes(letter)
-        ).length;
+    function startNewGame(){
+        setCurrentWord("react")
+        setGuess([])
+    }
 
-        if (prevGuess.includes(letter) ||
-            wrongCount >= maxAttempts
-        ) {
-            return prevGuess;
-            }
-            return [...prevGuess, letter];
-    });
+    
+    function handleGuess(letter) {        
+        setGuess(prevGuess => 
+            prevGuess.includes(letter) ?
+                prevGuess :
+            [...prevGuess, letter]
+    )
 }
 
     const languageElements = languages.map((lang, index) =>{
@@ -89,7 +90,10 @@ export default function Endgame() {
             <section className="keyboard-display">
                 {alphabet}
             </section>
-            <button className="new-game">New Game</button>
+            {isGameOver && <button className="new-game"> 
+                New Game
+            </button>
+            }
         </main>
     )
 }
