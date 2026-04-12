@@ -15,7 +15,25 @@ export default function Endgame() {
             currentWord.split("").every(letter => guess.includes(letter))
     const isGameLost = wrongGuessCount >= languages.length -1
     const isGameOver = isGameWon || isGameLost
-    
+
+    function GameStatus (){
+        if (!isGameOver) return null
+        return(
+        <>
+        {isGameWon ? (
+            <>
+            <h2>You win!</h2> 
+            <p>Well done!🎉</p>
+            </>) 
+        : (
+            <>
+            <h2> Game over! </h2>
+            <p>You lose! Better start learning Assembly 😭</p>
+            </>)}
+    </>
+    )
+}
+
     function startNewGame(){
         setCurrentWord("react")
         setGuess([])
@@ -77,9 +95,11 @@ export default function Endgame() {
                 <h1>Assembly: Endgame</h1>
                 <p>Guess the word in under 8 attempts to keep the programming world safe from Assembly!</p>
             </header>
-            <section className="game-status">
-                <h2>You win!</h2>
-                <p>Well done!🎉</p>
+            <section className={clsx("game-status",{
+                "win" : isGameWon,
+                "lose" : isGameLost
+            })}>
+                <GameStatus />
             </section>  
             <section className="language-chips">
                 {languageElements}    

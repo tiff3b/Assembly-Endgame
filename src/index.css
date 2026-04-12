@@ -37,8 +37,8 @@ header p {
   color: #8e8e8e;
 }
 
-.game-status{
-  background-color: #10a95b;
+.game-status {
+  background-color: #262626;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,13 +47,20 @@ header p {
   color: #f9f4da;
   width: 352px
 }
-
-h2{
-  font-size: 1.25em;
+.game-status p {
   margin: 5px;
 }
 
-.game-status p {
+.win {
+  background-color: #10a95b;
+}
+
+.lose {
+  background-color: #ba2a2a;
+}
+
+h2{
+  font-size: 1.25em;
   margin: 5px;
 }
 
