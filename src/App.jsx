@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import languages from './language.js'
 import { clsx } from 'clsx'
+import {getFarewellText} from './utils.js'
 
 export default function Endgame() {
 
@@ -16,23 +17,38 @@ export default function Endgame() {
     const isGameLost = wrongGuessCount >= languages.length -1
     const isGameOver = isGameWon || isGameLost
 
+    const lastGuessedLetter = guess[guess.length - 1]
+    const isLastGuessWrong = lastGuessedLetter && !currentWord.includes(lastGuessedLetter)
+
+const lostLanguage = isLastGuessWrong
+    ? languages[wrongGuessCount - 1]
+    : null
+
     function GameStatus (){
-        if (!isGameOver) return null
-        return(
-        <>
-        {isGameWon ? (
+        if (!isGameOver && lostLanguage) {
+            return (
+                <p className="farewell" >
+                    {getFarewellText(lostLanguage.name)}
+                </p>
+            )
+        }
+
+        if (isGameWon) {
+            return (
             <>
             <h2>You win!</h2> 
             <p>Well done!🎉</p>
-            </>) 
-        : (
+            </>
+            ) 
+         } if (isGameLost) {
+            return (
             <>
             <h2> Game over! </h2>
             <p>You lose! Better start learning Assembly 😭</p>
-            </>)}
-    </>
-    )
-}
+            </>
+            )
+        }
+    }
 
     function startNewGame(){
         setCurrentWord("react")
@@ -96,8 +112,9 @@ export default function Endgame() {
                 <p>Guess the word in under 8 attempts to keep the programming world safe from Assembly!</p>
             </header>
             <section className={clsx("game-status",{
-                "win" : isGameWon,
-                "lose" : isGameLost
+                win : isGameWon,
+                lose : isGameLost,
+                farewell : !isGameOver && lostLanguage
             })}>
                 <GameStatus />
             </section>  

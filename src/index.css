@@ -42,10 +42,12 @@ header p {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   border-radius: 6px;
   margin-block: 30px;
   color: #f9f4da;
-  width: 352px
+  width: 352px;
+  min-height: 60px;
 }
 .game-status p {
   margin: 5px;
@@ -57,6 +59,17 @@ header p {
 
 .lose {
   background-color: #ba2a2a;
+}
+
+.farewell {
+  background-color: #7a5ea7;
+  border: 1px dashed #323232;
+}
+
+.farewell p{
+  font-style: italic;
+  font-weight: 400;
+  border: none;
 }
 
 h2{
