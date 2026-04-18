@@ -126,6 +126,10 @@ span.letter {
   border-bottom: 1px solid #f9f4da;
 }
 
+span.missed {
+  color:#EC5D49;
+}
+
 .keyboard{
   display: flex;
   align-items: center;

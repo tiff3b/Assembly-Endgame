@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import languages from './language.js'
 import { clsx } from 'clsx'
-import {getFarewellText} from './utils.js'
+import {getFarewellText, randomWord} from './utils.js'
+import confetti from "canvas-confetti"
 
 export default function Endgame() {
 
-    const [currentWord, setCurrentWord] = useState("react");
+    const [currentWord, setCurrentWord] = useState(() => randomWord());
 
     const[guess, setGuess] = useState([]);
 
@@ -39,7 +40,7 @@ const lostLanguage = isLastGuessWrong
             <h2>You win!</h2> 
             <p>Well done!🎉</p>
             </>
-            ) 
+            )
          } if (isGameLost) {
             return (
             <>
@@ -50,8 +51,14 @@ const lostLanguage = isLastGuessWrong
         }
     }
 
+    useEffect(() => {
+        if (isGameWon) {
+            confetti()
+        }
+    }, [isGameWon])
+     
     function startNewGame(){
-        setCurrentWord("react")
+        setCurrentWord(randomWord())
         setGuess([])
     }
 
@@ -81,11 +88,19 @@ const lostLanguage = isLastGuessWrong
         )
     })
 
-    const wordElements = currentWord.split("").map((letter, index) => (
-        <span key={index} className="letter">
-            {guess.includes(letter) ? letter.toUpperCase() : ""}
+    const wordElements = currentWord.split("").map((letter, index) => {
+        const wasGuessed = guess.includes(letter)
+        
+        return(
+            <span 
+                key={index} 
+                className={clsx("letter", {
+                    "missed" : isGameLost && !wasGuessed
+                })} >
+                    {(wasGuessed || isGameLost ? letter.toUpperCase() : "")}
             </span>
-    ))
+    )
+})
 
     const alphabet = "abcdefghijklmnopqrstuvwxyz".split("").map((keyboard, index) => {
         const isGuessed = guess.includes(keyboard);
@@ -99,8 +114,12 @@ const lostLanguage = isLastGuessWrong
         return (
             <button key={index} 
                     className={className}
-                    onClick={() => handleGuess(keyboard)}>
-                {keyboard.toUpperCase()}
+                    onClick={() => handleGuess(keyboard)}
+                    disabled={isGameOver}
+                    aria-disabled={guess.includes(keyboard)}
+                    aria-label={`Letter ${keyboard}`}>
+
+                    {keyboard.toUpperCase()}
             </button>
         );
     });    
@@ -111,7 +130,10 @@ const lostLanguage = isLastGuessWrong
                 <h1>Assembly: Endgame</h1>
                 <p>Guess the word in under 8 attempts to keep the programming world safe from Assembly!</p>
             </header>
-            <section className={clsx("game-status",{
+            <section 
+                aria-live="polite" 
+                role="status"
+                className={clsx("game-status",{
                 win : isGameWon,
                 lose : isGameLost,
                 farewell : !isGameOver && lostLanguage
@@ -127,7 +149,7 @@ const lostLanguage = isLastGuessWrong
             <section className="keyboard-display">
                 {alphabet}
             </section>
-            {isGameOver && <button className="new-game"> 
+            {isGameOver && <button className="new-game" onClick={startNewGame}> 
                 New Game
             </button>
             }
